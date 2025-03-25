@@ -7,7 +7,7 @@ export const HOST: string = ''
 export const TITLES: Partial<typeTitles> = {
   hostname: ['主机名', '', '当前服务器的主机名称'],
   uptime_days: ['运行时间', '天', '服务器自上次启动以来的运行天数'],
-  tasks_info: ['进程 (运行中/全部)', '', '当前运行的进程数量与总进程数量'],
+  tasks_info: ['进程 (运行/全部)', '', '当前运行的进程数量与总进程数量'],
   load_averages_info: ['负载', '', '系统在过去 1、5、15 分钟的平均负载'],
   memory_usage_el: ['内存', '', '当前内存使用情况，已用/总容量'],
   traffic_info: ['总流量 (接收/发送)', 'G', '服务器自上次启动以来的网络总流量，包括接收和发送的数据量'],

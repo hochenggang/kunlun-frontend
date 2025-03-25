@@ -94,13 +94,13 @@ const calculateCpuPercentages = (
   const total = Object.values(diff).reduce((sum, value) => sum + value, 0);
 
   return {
-    cpu_us_percent: total > 0 ? toFloat((diff.cpu_us / total)) : 0,
-    cpu_sy_percent: total > 0 ? toFloat((diff.cpu_sy / total)) : 0,
-    cpu_ni_percent: total > 0 ? toFloat((diff.cpu_ni / total)) : 0,
-    cpu_id_percent: total > 0 ? toFloat((diff.cpu_id / total)) : 0,
-    cpu_wa_percent: total > 0 ? toFloat((diff.cpu_wa / total)) : 0,
-    cpu_hi_percent: total > 0 ? toFloat((diff.cpu_hi / total)) : 0,
-    cpu_st_percent: total > 0 ? toFloat((diff.cpu_st / total)) : 0,
+    cpu_us_percent: total > 0 ? toFloat((diff.cpu_us / total) * 100) : 0,
+    cpu_sy_percent: total > 0 ? toFloat((diff.cpu_sy / total) * 100) : 0,
+    cpu_ni_percent: total > 0 ? toFloat((diff.cpu_ni / total) * 100) : 0,
+    cpu_id_percent: total > 0 ? toFloat((diff.cpu_id / total) * 100) : 0,
+    cpu_wa_percent: total > 0 ? toFloat((diff.cpu_wa / total) * 100) : 0,
+    cpu_hi_percent: total > 0 ? toFloat((diff.cpu_hi / total) * 100) : 0,
+    cpu_st_percent: total > 0 ? toFloat((diff.cpu_st / total) * 100) : 0,
   }
 }
 

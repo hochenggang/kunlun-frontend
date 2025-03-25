@@ -10,7 +10,7 @@ const PercentageCircle: React.FC<PercentageCircleProps> = ({ percentage }): Reac
   const offset = circumference * (1 - percentage);
 
   return (
-    <div className="inline-block align-middle mr-1" title={`${percentage * 100}%`}>
+    <div className="inline-block align-middle mr-1" title={`${(percentage * 100).toFixed(2)}%`}>
       <svg className="w-4 h-4" viewBox="0 0 50 50">
         <circle
           className="text-gray-200 stroke-current"
