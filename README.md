@@ -1,54 +1,82 @@
-# React + TypeScript + Vite
+# Kunlun Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Kunlun Frontend 是 Kunlun 轻量级服务器监控系统的前端部分，与 **Kunlun Server**（后端）和 **Kunlun Client**（客户端）协同工作，为用户提供直观、便捷的服务器性能监控数据展示界面。基于 `vite + react + chart.js` 构建，具备简洁优雅的设计风格，让用户毫无心智负担地使用。
 
-Currently, two official plugins are available:
+## 快速开始
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### 1. 环境准备
+确保你的开发环境具备以下条件：
+- Node.js（建议使用 LTS 版本）
+- npm 或 yarn
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+### 2. 克隆项目
+在终端中执行以下命令，克隆 Kunlun Frontend 仓库：
+```bash
+git clone https://github.com/hochenggang/kunlun-frontend.git
+cd kunlun-frontend
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### 3. 安装依赖
+使用 npm 或 yarn 安装项目所需依赖：
+```bash
+# 使用 npm
+npm install
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+# 使用 yarn
+yarn install
 ```
+
+### 4. 启动开发服务器
+执行以下命令启动开发服务器：
+```bash
+# 使用 npm
+npm run dev
+
+# 使用 yarn
+yarn dev
+```
+浏览器将自动打开 `http://localhost:5173`（默认端口，可在配置中修改），你可以在此页面进行开发和测试。
+
+### 5. 构建生产版本
+当开发完成后，执行以下命令构建生产版本：
+```bash
+# 使用 npm
+npm run build
+
+# 使用 yarn
+yarn build
+```
+构建后的文件将位于 `dist` 目录中，你可以将此目录部署到你的服务器上。
+
+> 注：按照惯例不应上传 dist 文件夹，但为了便于 cloudlare.worker 版本的 kunlun server 使用预编译好的前端文件，上传了 .dist 文件夹。
+
+## 功能特性
+
+### **实时数据展示**
+- 借助 `react` 和 `chart.js`，以直观、动态的图表形式实时展示 CPU、内存、磁盘、网络等关键性能指标。数据自动实时刷新，确保用户始终获取到最新的服务器状态信息。
+
+### **历史数据趋势查看**
+- 提供便捷的历史数据查询界面，用户能够选择特定时间段查看服务器过去的性能数据趋势。通过 `chart.js` 生成折线图，清晰呈现数据随时间的变化情况，助力用户深入分析服务器运行状况。
+
+### **指标备注说明**
+- 针对每个性能指标，都配备了详细的备注说明。用户将鼠标悬停在指标相关区域时，会弹出解释框，对该指标进行说明，帮助用户更好地理解服务器状态。
+
+### **简洁优雅设计**
+- 整体设计遵循简洁原则，界面布局合理，元素清晰明了。没有复杂的操作流程和冗余的信息展示，让用户能够轻松上手，毫无心智负担地使用监控系统。
+
+## 技术栈
+
+Kunlun Frontend 主要基于以下技术构建：
+- **Vite**：新一代的前端构建工具，提供快速的开发体验和高效的构建性能。利用其即时热模块替换（HMR）功能，在开发过程中实现代码的快速更新和反馈。
+- **React**：用于构建交互式用户界面。通过组件化的开发方式，提高代码的可维护性和复用性，实现高效的数据渲染和状态管理。
+- **Chart.js**：强大的数据可视化库，能够轻松创建各种美观、定制化的图表。在本项目中，用于将服务器性能数据以直观的图表形式呈现给用户，帮助用户更好地理解和分析数据。
+
+## 贡献指南
+欢迎广大开发者为 Kunlun Frontend 贡献力量。如果你发现了问题或者有新的功能建议，请发起 Issue
+
+## 许可证
+Kunlun Frontend 基于 [MIT 许可证](https://opensource.org/licenses/MIT) 开源。这意味着你可以自由地使用、修改和分发本项目的代码，但需保留版权声明和许可证文件。
+
+
+
+感谢你使用 Kunlun Frontend，希望它能为你的服务器监控工作带来便利！ 
