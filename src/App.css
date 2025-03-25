@@ -1,0 +1,53 @@
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(7rem, 1fr));
+  gap: 0.5rem;
+}
+
+.kv-k {
+  font-size: 0.7rem;
+  font-weight: lighter;
+}
+
+.kv-v {
+  font-size: 0.8rem;
+  font-weight: normal;
+  color: #2d2d2d;
+}
+
+.operate-button {
+  cursor: pointer;
+}
+
+.offline {
+  opacity: 0.8;
+  border-left: 2px solid #e49797;
+}
+
+.online {
+  border-left: 2px solid #83dc6e;
+}
+
+.bg-success {
+  background-color: #83dc6e;
+}
+
+#trendChart {
+  min-height: 300px;
+}
+
+#modal-root {
+  position: fixed;
+  z-index: 9999;
+  width: 100%;
+  height: 100%;
+}
+
+
+.bg-model {
+  background-color: #2d2d2d3f;
+}
+
+.operate-button {
+  font-size: 0.75rem;
+}
