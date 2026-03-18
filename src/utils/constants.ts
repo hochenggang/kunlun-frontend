@@ -2,7 +2,7 @@ import type { typeTitles } from "../types/types";
 
 
 
-export const HOST: string = 'https://kunlun.imhcg.cn'
+export const HOST: string = ''
 
 export const TITLES: Partial<typeTitles> = {
   hostname: ['主机名', '', '当前服务器的主机名称'],
