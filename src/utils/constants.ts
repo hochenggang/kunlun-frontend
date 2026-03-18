@@ -2,7 +2,7 @@ import type { typeTitles } from "../types/types";
 
 
 
-export const HOST: string = ''
+export const HOST: string = 'https://kunlun.imhcg.cn'
 
 export const TITLES: Partial<typeTitles> = {
   hostname: ['主机名', '', '当前服务器的主机名称'],
@@ -16,7 +16,6 @@ export const TITLES: Partial<typeTitles> = {
   net_rx_speed_kib: ['下载速度', 'K', '当前网络下载速度'],
   update_at: ['更新时间', '', '数据最后更新时间'],
   cpu_num_cores: ['CPU 核心数', '', 'CPU 的核心数量'],
-  cpu_delay_us: ['CPU 延迟', 'μs', 'CPU 处理任务的延迟时间'],
   cpu_us_percent: ['CPU 用户占用', '%', '用户进程占用的 CPU 百分比'],
   cpu_sy_percent: ['CPU 系统占用', '%', '系统内核占用的 CPU 百分比'],
   cpu_ni_percent: ['CPU 低优先级', '%', '低优先级进程占用的 CPU 百分比'],
@@ -25,7 +24,6 @@ export const TITLES: Partial<typeTitles> = {
   cpu_hi_percent: ['CPU 硬件中断', '%', '硬件中断占用的 CPU 百分比'],
   cpu_st_percent: ['CPU 被宿主机占用', '%', '虚拟机被宿主机占用的 CPU 百分比'],
   root_disk_useage_el: ['根目录空间', '', '根目录磁盘的使用情况，已用/总容量%'],
-  disk_delay_us: ['磁盘延迟', 'ms', '根目录磁盘 I/O 操作的延迟时间'],
   disk_reads_per_second: ['读取次数', '', '根目录磁盘采样周期内的读取操作次数'],
   disk_writes_per_second: ['写入次数', '', '根目录磁盘采样周期内的写入操作次数'],
   disk_avg_read_latency: ['平均读取延迟', 'ms', '根目录磁盘读取操作的平均延迟时间'],
@@ -43,7 +41,6 @@ export const historicalTitles: Partial<typeTitles> = {
   running_tasks: ["任务数-正在进行", "", "当前正在运行的任务数量"],
   total_tasks: ["任务数-全部", "", "系统中总的任务数量"],
   cpu_num_cores: ["CPU-核心数", "", "CPU的核心数量"],
-  cpu_delay_us: ["CPU-延迟", "μs", "CPU任务的延迟时间（微秒）"],
   cpu_user: ["CPU-用户占用", "%", "用户空间占用的CPU百分比"],
   cpu_system: ["CPU-系统占用", "%", "内核空间占用的CPU百分比"],
   cpu_nice: ["CPU-低优先级", "%", "低优先级进程占用的CPU百分比"],
@@ -62,7 +59,6 @@ export const historicalTitles: Partial<typeTitles> = {
   udp_connections: ["连接数-UDP", "个", "当前UDP连接数量"],
   default_interface_net_rx_bytes: ["流量-下载速度", "Bit", "当前开机期间默认网络接口接收的总字节数"],
   default_interface_net_tx_bytes: ["流量-上传速度", "Bit", "当前开机期间默认网络接口发送的总字节数"],
-  disk_delay_us: ["磁盘-延迟", "ms", "磁盘IO操作的延迟时间（毫秒）"],
   root_disk_total_kb: ["磁盘-根目录总空间", "KB", "根磁盘的总容量（KB）"],
   root_disk_avail_kb: ["磁盘-根目录可用空间", "KB", "根磁盘的可用容量（KB）"],
   reads_completed: ["磁盘-读取完成次数", "", "磁盘读取操作完成的次数"],
@@ -72,4 +68,6 @@ export const historicalTitles: Partial<typeTitles> = {
   iotime_ms: ["磁盘-IO时间", "ms", "磁盘IO操作的总时间（毫秒）"],
   ios_in_progress: ["磁盘-进行中的IO操作", "", "当前正在进行的磁盘IO操作数量"],
   weighted_io_time: ["磁盘-加权IO时间", "ms", "加权后的磁盘IO操作时间（毫秒）"],
+  disk_avg_read_latency: ['磁盘-平均读取延迟', 'ms', '根目录磁盘读取操作的平均延迟时间'],
+  disk_avg_write_latency: ['磁盘-平均写入延迟', 'ms', '根目录磁盘写入操作的平均延迟时间'],
 };

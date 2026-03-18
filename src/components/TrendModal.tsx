@@ -4,9 +4,9 @@ import { Chart, CategoryScale, LinearScale, LineElement, LineController, PointEl
 Chart.register(CategoryScale, LinearScale, LineElement, LineController, PointElement, Tooltip);
 
 
-import { calculateAndNormalizeKeys, toFloat } from '../utils/helpers';
+import { calculateAndNormalizeKeys, toFloat, calculateIOData } from '../utils/helpers';
 import { HOST, historicalTitles } from '../utils/constants';
-import { typeExtendedReport, typeTitles } from '../types/types';
+import { typeExtendedReport, typeRawReport, typeTitles } from '../types/types';
 
 interface TrendModalProps {
     clientId: number;
@@ -41,10 +41,15 @@ const TrendModal: React.FC<TrendModalProps> = ({ clientId, onClose }) => {
             const endpoint = `/status/${dataLevel}?client_id=${clientId}`;
             const response = await fetch(`${HOST}${endpoint}`);
 
-            const data = (await response.json() as Partial<typeExtendedReport>[]).reverse();
+            const data = (await response.json() as typeRawReport[]).reverse();
 
             data.map((item: Partial<typeExtendedReport>) => calculateAndNormalizeKeys(item, ["cpu_user", "cpu_system", "cpu_nice", "cpu_idle", "cpu_iowait", "cpu_irq", "cpu_softirq", "cpu_steal"]));
             data.map((item: Partial<typeExtendedReport>) => calculateUsedMemParcent(item));
+            data.reduce((pre, cur) => {
+                const additions = calculateIOData(cur, pre)
+                Object.assign(cur, additions);
+                return cur;
+            })
 
             setApiData(data);
 
@@ -52,7 +57,11 @@ const TrendModal: React.FC<TrendModalProps> = ({ clientId, onClose }) => {
                 const keys = Object.keys(data[0]).filter(
                     (key) => key !== 'client_id' && key !== 'timestamp' && historicalTitles.hasOwnProperty(key)
                 );
-                setAvailableKeys(keys);
+                const exKeys = keys.concat([
+                    'disk_avg_read_latency',
+                    'disk_avg_write_latency',])
+
+                setAvailableKeys(exKeys);
                 if (!selectedKeys) {
                     setSelectedKeys(['load_1min']);
                 } else {

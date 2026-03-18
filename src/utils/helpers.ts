@@ -191,5 +191,6 @@ const calculateIOData = (
 
 export {
   calculateAndNormalizeKeys, calculateUsedMemParcent,
-  toFloat
+  toFloat,
+  calculateIOData
 }

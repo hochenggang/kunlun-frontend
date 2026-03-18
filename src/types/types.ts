@@ -25,8 +25,6 @@ export interface typeRawReport {
     default_interface_net_rx_bytes: number; // 默认网络接口接收字节数
     default_interface_net_tx_bytes: number; // 默认网络接口发送字节数
     cpu_num_cores: number; // CPU 核心数
-    cpu_delay_us: number; // CPU 延迟（微秒）
-    disk_delay_us: number; // 磁盘延迟（微秒）
     root_disk_total_kb: number; // 根磁盘总容量（KB）
     root_disk_avail_kb: number; // 根磁盘可用容量（KB）
     reads_completed: number; // 完成的读操作数
