@@ -1,28 +1,11 @@
 import './App.css'
 
 import { typeRawReport, typeExtendedReport, typeTitles } from './types/types';
-import { generateEnhancedReport, isOutdated } from './utils/helpers';
+import { generateEnhancedReport, isOutdated, transformTableToReports, typeTableData } from './utils/helpers';
 import { TITLES, HOST } from './utils/constants';
 import Server from './components/Server';
 
 import React, { useState, useReducer, useCallback, useEffect, useRef } from 'react';
-
-type typeTableData = (string | number)[][];
-
-const transformTableToReports = (tableData: typeTableData): typeRawReport[] => {
-    if (!tableData || tableData.length < 2) return [];
-    
-    const headers = tableData[0] as string[];
-    const rows = tableData.slice(1);
-    
-    return rows.map(row => {
-        const report: Record<string, string | number> = {};
-        headers.forEach((header, index) => {
-            report[header] = row[index];
-        });
-        return report as unknown as typeRawReport;
-    });
-};
 
 
 const App: React.FC = () => {

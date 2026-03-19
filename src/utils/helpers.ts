@@ -4,6 +4,23 @@ import { PercentageInfo } from '../components/Percentag';
 
 const toFloat = (num: number) => Math.round(num * 100) / 100;
 
+export type typeTableData = (string | number)[][];
+
+export const transformTableToReports = (tableData: typeTableData): typeRawReport[] => {
+    if (!tableData || tableData.length < 2) return [];
+    
+    const headers = tableData[0] as string[];
+    const rows = tableData.slice(1);
+    
+    return rows.map(row => {
+        const report: Record<string, string | number> = {};
+        headers.forEach((header, index) => {
+            report[header] = row[index];
+        });
+        return report as unknown as typeRawReport;
+    });
+};
+
 export const BtoGB = (bytes: number) => toFloat(bytes / 1024 / 1024 / 1024);
 export const usagePercentage = (used: number, total: number) => toFloat(used / total);
 export const formatTime = (timestamp: number) => new Date(timestamp * 1000).toLocaleTimeString();
@@ -190,7 +207,7 @@ const calculateIOData = (
 
 
 export {
-  calculateAndNormalizeKeys, calculateUsedMemParcent,
-  toFloat,
-  calculateIOData
+    calculateAndNormalizeKeys, calculateUsedMemParcent,
+    toFloat,
+    calculateIOData
 }

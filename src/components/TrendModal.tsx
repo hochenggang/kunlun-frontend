@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
-// import Chart from 'chart.js/auto';
 import { Chart, CategoryScale, LinearScale, LineElement, LineController, PointElement, Tooltip } from 'chart.js';
 Chart.register(CategoryScale, LinearScale, LineElement, LineController, PointElement, Tooltip);
 
 
-import { calculateAndNormalizeKeys, toFloat, calculateIOData } from '../utils/helpers';
+import { calculateAndNormalizeKeys, toFloat, calculateIOData, transformTableToReports, typeTableData } from '../utils/helpers';
 import { HOST, historicalTitles } from '../utils/constants';
 import { typeExtendedReport, typeRawReport, typeTitles } from '../types/types';
 
@@ -14,11 +13,12 @@ interface TrendModalProps {
 }
 
 const TrendModal: React.FC<TrendModalProps> = ({ clientId, onClose }) => {
-    const [apiData, setApiData] = useState<any[] | null>(null);
-    const [chartData, setChartData] = useState<any>(null);
+    const [apiData, setApiData] = useState<typeRawReport[] | null>(null);
+    const [chartData, setChartData] = useState<{ labels: string[]; datasets: { label: string; data: (string | number | undefined)[]; borderColor: string; fill: boolean; pointStyle: false; borderWidth: number }[] } | null>(null);
     const [dataLevel, setDataLevel] = useState('seconds');
     const [selectedKeys, setSelectedKeys] = useState<string[] | null>(null);
     const [availableKeys, setAvailableKeys] = useState<string[]>([]);
+    const [loading, setLoading] = useState(true);
 
     const dataLevelOptions = [
         { value: 'seconds', label: '最近一小时', title: '10秒递进' },
@@ -37,25 +37,27 @@ const TrendModal: React.FC<TrendModalProps> = ({ clientId, onClose }) => {
 
 
     const fetchHistoryData = useCallback(async () => {
+        setLoading(true);
         try {
             const endpoint = `/status/${dataLevel}?client_id=${clientId}`;
             const response = await fetch(`${HOST}${endpoint}`);
 
-            const data = (await response.json() as typeRawReport[]).reverse();
+            const tableData: typeTableData = await response.json();
+            const data = transformTableToReports(tableData).reverse();
 
             data.map((item: Partial<typeExtendedReport>) => calculateAndNormalizeKeys(item, ["cpu_user", "cpu_system", "cpu_nice", "cpu_idle", "cpu_iowait", "cpu_irq", "cpu_softirq", "cpu_steal"]));
             data.map((item: Partial<typeExtendedReport>) => calculateUsedMemParcent(item));
             data.reduce((pre, cur) => {
                 const additions = calculateIOData(cur, pre)
                 Object.assign(cur, additions);
-                return cur;
+                return pre;
             })
 
             setApiData(data);
 
             if (data && data.length > 0) {
                 const keys = Object.keys(data[0]).filter(
-                    (key) => key !== 'client_id' && key !== 'timestamp' && historicalTitles.hasOwnProperty(key)
+                    (key) => key !== 'client_id' && key !== 'timestamp' && Object.prototype.hasOwnProperty.call(historicalTitles, key)
                 );
                 const exKeys = keys.concat([
                     'disk_avg_read_latency',
@@ -71,6 +73,8 @@ const TrendModal: React.FC<TrendModalProps> = ({ clientId, onClose }) => {
 
         } catch (error) {
             console.error('Error fetching history data:', error);
+        } finally {
+            setLoading(false);
         }
     }, [clientId, dataLevel]);
 
@@ -128,16 +132,18 @@ const TrendModal: React.FC<TrendModalProps> = ({ clientId, onClose }) => {
 
             const datasets = selectedKeys?.map((key, index) => ({
                 label: key,
-                data: apiData.map((item) => item[key]),
+                data: apiData.map((item) => (item as unknown as Record<string, string | number>)[key]),
                 borderColor: Object.values(CHART_COLORS)[index % Object.keys(CHART_COLORS).length],
                 fill: false,
-                pointStyle: false,
+                pointStyle: false as const,
                 borderWidth: 1,
             }));
 
             console.log('datasets', datasets)
 
-            setChartData({ labels, datasets });
+            if (datasets) {
+                setChartData({ labels, datasets });
+            }
         }
     }, [selectedKeys]);
 
@@ -236,7 +242,13 @@ const TrendModal: React.FC<TrendModalProps> = ({ clientId, onClose }) => {
                 </div>
 
                 <div className="relative mt-2 p-2 shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)]" style={{ minHeight: '350px' }}>
-                    <canvas id="trendChart"></canvas>
+                    {loading ? (
+                        <div className="flex items-center justify-center h-full" style={{ minHeight: '350px' }}>
+                            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+                        </div>
+                    ) : (
+                        <canvas id="trendChart"></canvas>
+                    )}
                 </div>
             </div>
         </div>
