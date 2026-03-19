@@ -7,6 +7,23 @@ import Server from './components/Server';
 
 import React, { useState, useReducer, useCallback, useEffect, useRef } from 'react';
 
+type typeTableData = (string | number)[][];
+
+const transformTableToReports = (tableData: typeTableData): typeRawReport[] => {
+    if (!tableData || tableData.length < 2) return [];
+    
+    const headers = tableData[0] as string[];
+    const rows = tableData.slice(1);
+    
+    return rows.map(row => {
+        const report: Record<string, string | number> = {};
+        headers.forEach((header, index) => {
+            report[header] = row[index];
+        });
+        return report as unknown as typeRawReport;
+    });
+};
+
 
 const App: React.FC = () => {
     const [servers, setServers] = useState<typeExtendedReport[]>([]);
@@ -24,9 +41,9 @@ const App: React.FC = () => {
 
     const fetchData = useCallback(async () => {
         try {
-            // 从后端拉取客户端最新上报的状态 typeRawReport[]
             const response = await fetch(`${HOST}/status/latest`);
-            const currentReportList: typeRawReport[] = await response.json();
+            const tableData: typeTableData = await response.json();
+            const currentReportList: typeRawReport[] = transformTableToReports(tableData);
 
             // 将所有的原始报告重新计算为用于展现的数据
             currentReportList.forEach(currentReport => {
